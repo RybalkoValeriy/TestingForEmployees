@@ -1,0 +1,56 @@
+@using TestingForEmployees.ViewModels
+@model ResultDetailViewModel
+<h2>@Model.factTitle.TitleText</h2>
+<p>Date: @Model.factTitle.DateAdd</p>
+<h4>Вірних відповідей: <span style="font-size:26px;">@Model.Percent %</span></h4>
+<div class="card">
+    <ul>
+        @foreach (var item in Model.trueQuest)
+            {
+            <li>@item.QuestText</li>
+        }
+    </ul>
+</div>
+
+<h2>Правильні відповіді</h2>
+<table class="table table-bordered" style="background-color:#222">
+    <thead>
+        <tr>
+            <th>Питання:</th>
+            <th>Відповідь:</th>
+            <th>Статус:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.factAnswersLog)
+            {
+            <tr>
+                <td>@item.FactQuestLog.QuestText</td>
+                <td>@item.AnswersText</td>
+                <td>@(item.State ? "+" : "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h2>Відповіді користувача</h2>
+<table class="table table-bordered" style="background-color:#222">
+    <thead>
+        <tr>
+            <th>Питання:</th>
+            <th>Відповідь:</th>
+            <th>Статус:</th>
+            <th>Дата:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AnswerUserResultLog)
+            {
+            <tr>
+                <td>@item.factQuestLog.QuestText</td>
+                <td>@item.factAnswersLog.AnswersText</td>
+                <td>@(item.State ? "+" : "-")</td>
+                <td>@item.DateAnsw</td>
+            </tr>
+        }
+    </tbody>
+</table>

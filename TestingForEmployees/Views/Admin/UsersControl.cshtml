@@ -1,0 +1,106 @@
+@using TestingForEmployees.Models;
+@model IEnumerable<ApplicationUsers>
+<div class="head-users">
+    <h2>Контроль облікових записів для користувачів:</h2>
+    <input type="text" name="name" value="" placeholder="Пошук прізвище:" class="form-control" id="search-user" onkeypress="SearchUser()" />
+</div>
+<table class="table table-bordered tableAdm" id="usersAdm">
+    <thead>
+        <tr>
+            <th>Прізвище</th>
+            <th>Ім'я</th>
+            <th>Побатькові</th>
+            <th>Логін</th>
+            <th>Бранч</th>
+            <th>Новий пароль:</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itm in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Access" asp-action="UsersTaskForTest" asp-all-route-data='new Dictionary<string,string>(){ { "userId", itm.Id } }' >@itm.LastName</a>
+                </td>
+                <td>
+                    <a asp-controller="Access" asp-action="UsersTaskForTest" asp-all-route-data='new Dictionary<string,string>(){ { "userId", itm.Id } }'>@itm.FirstName</a>
+                </td>
+                <td>
+                    <a asp-controller="Access" asp-action="UsersTaskForTest" asp-all-route-data='new Dictionary<string,string>(){ { "userId", itm.Id } }'>@itm.MiddleName</a>
+                </td>
+                <td>
+                    <a asp-controller="Access" asp-action="UsersTaskForTest" asp-all-route-data='new Dictionary<string,string>(){ { "userId", itm.Id } }'>@itm.UserName</a>
+                </td>
+                <td>
+                    @if (itm.Branch != null)
+                {
+                    @itm.Branch.BranchNumber
+                }
+            </td>
+            <td>
+                <div>
+                    <input type="password" name="newPass" value="" required placeholder="новий пароль" class="form-control pass-save" id="newPass-@itm.Id" />
+                    <div>
+                        <span id="message-@itm.Id" class="result" style="float:left;"></span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-table" onclick="ChangePass('@itm.Id')" title="Зберегти"><span class="glyphicon glyphicon-floppy-saved"></span></button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function ChangePass(userId)
+    {
+        var pass = $('#newPass-' + userId);
+        var messageResult = $('#message-' + userId);
+        $.ajax({
+            type: 'post',
+            url:'@Url.Action("ChangePassword", "Admin")',
+            dataType: 'json',
+            data: {
+                userId: userId,
+                newPass: pass.val()
+            },
+            statusCode: {
+                200: function (data)
+                {
+                    messageResult.empty();
+                    messageResult.append(data.responseText);
+                    pass.val('');
+                },
+                400: function (data)
+                {
+                    messageResult.empty();
+                    messageResult.append(data.responseText);
+                    pass.val('');
+                }
+            }
+        });
+    }
+
+    function SearchUser()
+    {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search-user");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("usersAdm");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

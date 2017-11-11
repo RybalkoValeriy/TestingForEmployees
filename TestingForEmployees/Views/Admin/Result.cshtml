@@ -1,0 +1,56 @@
+﻿<script src="~/js/pickmeup.js"></script>
+<script src="~/js/demo.js"></script>
+
+<div class="container">
+    <section>
+        <h2>Оберіть дату:</h2>
+        <article>
+            <input type="text" value="" class="form-control" id="date-control" style="max-width: 200px; float:left">
+            <input type="button" class="form-control btn-table" value="Знайти" style="max-width: 200px; float:left" id="search-test" onclick="SelectDate()" />
+        </article>
+    </section>
+</div>
+<div class="container">
+    <h4>Тест проходили:</h4>
+    <ul id="result-this"></ul>
+</div>
+
+<script>
+    function SelectDate() {
+        var date = $('#date-control').val();
+        if (ValidateValue(date)) {
+            bootpopup({
+                title: "Відобразити дані?",
+                no: function () {
+                },
+                yes: function () {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Admin/PostResult',
+                        dataType: 'json',
+                        data: {
+                            date: date
+                        },
+                        statusCode: {
+                            200: function (data) {
+                                $("#result-this").empty();
+                                ViewResultAnswers(data);
+                            },
+                            400: function (data) {
+                                Confirmes("Помилка", '');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    };
+
+    function ViewResultAnswers(data) {
+        var ul = $("#result-this");
+            for (var i = 0; i < data.length; i++) {
+                ul.append('<li>' + data[i].lastName + ' ' + data[i].firstName + ' ' + data[i].middleName + ' ' + data[i].date + ' <span style="font-size:26px;">' + data[i].percent + '%</span>' + ' <a href="/Admin/ResultDetail?ResUsr=' + data[i].resUsr+'">Детальніше</a>'+'</li>');
+            }
+    };
+</script>
+

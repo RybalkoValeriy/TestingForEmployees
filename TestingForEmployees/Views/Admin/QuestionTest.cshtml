@@ -1,0 +1,43 @@
+<div class="container select-title">
+    <span class="result" id="resultFindQuestion"></span>
+    <select class="form-control" asp-items="ViewBag.Title" onchange="SelectTitle()" id="selectTitle"></select>
+</div>
+<div class="container">
+    <div class="panel panel-default" id="panel-add-question">
+        <div class="flx-cont">
+            <div class="">
+                <button class="btn btn-table" onclick="AddInput('addQuestionContainer')">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Додати нове питання
+                </button>
+            </div>
+            <div class="">
+                <button class="btn btn-table" onclick="RemoveInputAll('addQuestionContainer')">
+                    <span class="glyphicon glyphicon-minus"></span>
+                    Очистити всі питання
+                </button>
+            </div>
+            <div class="">
+                <button class="btn btn-table" onclick="SaveInputQuestion()" id="saveQuest">
+                    <span class="glyphicon glyphicon-floppy-saved"></span>
+                    Зберігти додані питання
+                </button>
+            </div>
+        </div>
+        <div id="addQuestionContainer">
+        </div>
+    </div>
+</div>
+<div class="container" id="tableQuest">
+    <table class="table table-bordered tableAdm" id="tableQust">
+        <thead>
+            <tr>
+                <th>Питання</th>
+                <th>Видалити</th>
+                <th>Змінити</th>
+                <th>Обрати</th>
+            </tr>
+        </thead>
+        <tbody id="bodyTblQuestion"></tbody>
+    </table>
+</div>

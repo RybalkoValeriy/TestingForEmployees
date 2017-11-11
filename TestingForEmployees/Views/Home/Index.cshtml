@@ -1,0 +1,44 @@
+﻿@using System;
+@using TestingForEmployees.ViewModels;
+@using TestingForEmployees.Models;
+@model IEnumerable<StartedTitleTestViewModel>
+
+<div class="container">
+    @if (Model.Count() == 0)
+    {
+        <h2>Доступних питань немає.</h2>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-block">
+                            @if (item.State == false & item.DateStarted == null)
+                            {
+                                <h4 class="card-title">@item.Title</h4>
+                                <p class="card-text">Кількість питань: @item.CountQuestion</p>
+                                <a asp-action="New" asp-controller="Home" asp-all-route-data='new Dictionary<string, string> { { "TestId", item.IdTitle.ToString() } }' class="btn btn-primary">Скласти тест!</a>
+                            }
+                            else if (item.State == true && item.DateStarted != null && item.DateStarted is DateTime && ((DateTime)item.DateStarted).Date == DateTime.Now.Date)
+                            {
+                                <h4 class="card-title">@item.Title</h4>
+                                <p class="card-text">Кількість питань залишились: @item.CountQuestion</p>
+                                <a asp-action="Continue" asp-controller="Home" asp-all-route-data='new Dictionary<string, string> { { "StLg", item.StartedTestLog.Id.ToString()} }' class="btn btn-primary btn-table">Продовжити тест!</a>
+                            }
+                            else if (item.State == false && item.DateStarted != null && item.DateStarted is DateTime && ((DateTime)item.DateStarted).Date == DateTime.Now.Date)
+                            {
+                                <h4 class="card-title">@item.Title</h4>
+                                <p class="card-text">Кількість питань: @item.CountQuestion</p>
+                                <a asp-action="Results" asp-controller="Home" asp-all-route-data='new Dictionary<string, string> { { "StLg", item.StartedTestLog.Id.ToString()} }' class="btn btn-primary btn-table" style="background-color:#5883e9">Ваш результат</a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

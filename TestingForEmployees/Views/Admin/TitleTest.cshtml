@@ -1,0 +1,59 @@
+@using TestingForEmployees.Models.Entities
+@model IEnumerable<TestTitle>
+
+<h2>Теми тестування:</h2>
+<div class="row">
+    <div class="col-lg-11">
+        <textarea class="form-control" type="text" name="titleTest" id="titleTest" value="" rows="2" cols="10" placeholder="Нова тема" required></textarea>
+    </div>
+    <div class="col-lg-1">
+        <button id="addTitleTest" class="btn btn-table" title="Додати та зберегти нову тему" onclick="AddNewTitleTest()">
+            <span class="glyphicon glyphicon-floppy-saved"></span>
+        </button>
+    </div>
+</div>
+@{
+    <table class="table table-bordered tableAdm" id="tableTitle">
+        <thead>
+            <tr>
+                <th>Назва теми</th>
+                <th>Видалити</th>
+                <th>Редагувати</th>
+                <th>Питань всього</th>
+                <th style="width:100px;">Питань для проходження</th>
+            </tr>
+        </thead>
+        <tbody id="bodyTblTitle">
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td title="@item.DateAdd" id="title-@item.Id">
+                            @item.Title
+                        </td>
+                        <td>
+                            <button class="btn btn-table" id="btnDeleteTitle" title="Видалити тему" onclick="DeleteTitle(@item.Id)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-table" title="Редагувати" onclick="EditTitle(@item.Id)" id="btnEditTitle-@item.Id">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <button class="btn btn-table hidden" title="Зберегти" onclick="SaveTitle(@item.Id)" id="btnSaveTitle-@item.Id">
+                                <span class="glyphicon glyphicon-floppy-saved"></span>
+                            </button>
+                        </td>
+                        <td style="width:40px;" id="CountAllQuestion-@item.Id">
+                            @item.QuestionsId.Where(x => x.WorkStateQuestion == true).Count()
+                        </td>
+                        <td style="width:100px;">
+                            <input type="text" value="@item.CountTestQuestion" id="CountTestQuestion-@item.Id" class="form-control" style="width:100px; margin:auto;text-align:center" disabled />
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
