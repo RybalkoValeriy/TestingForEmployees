@@ -1,15 +1,17 @@
 @using TestingForEmployees.ViewModels
 @model PassQuestionViewModel
 
-
-<div class="container answer-user">
+<div class="container">
     <h2>@Model.factTitleLog.TitleText</h2>
+</div>
+<div class="container answer-user">
+    <h4>Питання:</h4>
     <h3>@Model.factQuestLog.QuestText</h3>
     <div class="container">
         <form asp-action="SaveUserResponse" asp-controller="Home" asp-antiforgery="true">
             <input type="hidden" name="StLg" value="@Model.startedTestLog.Id" />
             <input type="hidden" name="fTitle" value="@Model.factTitleLog.Id" />
-            <input type="hidden" name="fQuest" value="@Model.factQuestLog.Id"/>
+            <input type="hidden" name="fQuest" value="@Model.factQuestLog.Id" />
             <table class="tbl-user-answer">
                 <tbody>
                     @foreach (var item in Model.factAnswersLog)
@@ -18,7 +20,7 @@
                             <th id="ans-usr">@item.AnswersText.Trim()</th>
                             <th>
                                 <div class="material-switch pull-right">
-                                    <input id="user-answer-@item.Id" type="checkbox" name="ansId" value="@item.Id"/>
+                                    <input id="user-answer-@item.Id" type="checkbox" name="ansId" value="@item.Id" />
                                     <label for="user-answer-@item.Id" class="label-primary"></label>
                                 </div>
                             </th>

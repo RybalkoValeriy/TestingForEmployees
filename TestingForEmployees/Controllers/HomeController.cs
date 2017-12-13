@@ -60,7 +60,7 @@ namespace TestingForEmployees.Controllers
             foreach (var item in titlesAccessed)
             {
                 // проверим все ли ответы заполнены 
-                foreach (var question in item.Title.QuestionsId)
+                foreach (var question in item.Title.QuestionsId.Where(x=>x.WorkStateQuestion==true))
                 {
                     if (question.TestAnswers.Where(x => x.WorkStateAnswers == true).Count() == 0)
                     {
